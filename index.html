@@ -12,7 +12,7 @@
   <script src="./script.js"></script>
 </head>
 
-<body>
+<body id="body" onload="init()">
   <nav class="navbar bg-body-tertiary">
     <div class="container-fluid">
       <span class="navbar-brand mb-0 h1">QuizApp</span>
@@ -20,44 +20,54 @@
   </nav>
 
   <div class="container">
-    <div class="card quiz-card" >
+    <div class="card quiz-card">
       <img src="./img/question-mark.jpg" class="card-img-top">
-      <div class="card-body">
-        <h5 class="card-title">Frage</h5>
+
+      <div class="card-body" id="endScreen" style="display: none;">
+        <div class="text-center">Quiz beendet</div>
+
+        <div><img class="width-100" src="./img/trophy.png" alt=""></div>
+        <div class="text-center">
+          Du hast  <b id="right-amound">XXX</b> Fragen von <b id="question-amountEnd">XXX</b> richtig beantwortet.
+        </div>
+      </div>
+
+      <div class="card-body" id="question-body">
+        <h5 id="questiontext" class="card-title">Frage</h5>
 
 
-        <div class="card mb-2">
-          <div class="card-body ">
+        <div class="card-hover card mb-2" onclick="answer('answer_1')">
+          <div id="answer_1" class="card-body ">
             Antwort
           </div>
 
 
         </div>
-        <div class="card mb-2">
-          <div class="card-body">
+        <div class="card-hover card mb-2" onclick="answer('answer_2')">
+          <div id="answer_2" class="card-body">
             Antwort
           </div>
 
 
         </div>
-        <div class="card mb-2">
-          <div class="card-body">
+        <div class="card-hover card mb-2" onclick="answer('answer_3')">
+          <div id="answer_3" class="card-body">
             Antwort
           </div>
 
 
         </div>
-        <div class="card mb-2">
-          <div class="card-body">
+        <div class="card-hover card mb-2" onclick="answer('answer_4')">
+          <div id="answer_4" class="card-body">
             Antwort
           </div>
         </div>
       </div>
 
       <div class="question-footer">
-       <span> <b>1</b> von <b>5</b> Fragen</span>
+        <span> <b id="actual-amount"></b> von <b id="question-amount"></b> Fragen</span>
 
-        <button class="btn btn-primary">Nächste Frage</button>
+        <button onclick=" nextQuestion()" id="next-btn" class="btn btn-primary" disabled>Nächste Frage</button>
       </div>
 
     </div>
