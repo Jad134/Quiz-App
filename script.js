@@ -71,22 +71,33 @@ function init() {
 
 function showQuestion() {
 
+    let percent = currentQuestion / questions.length; // Rechnet die aktuelle frage durch die anzahl der fragen.
+    percent = Math.round(percent * 100); // rechnet dann das ergebnis von percent mal 100 um richtige zahlen mit der kommastelle zu bekommen. Math.round runded auf
+
     if (currentQuestion >= questions.length) {
         //show end screen
         document.getElementById('endScreen').style = ``; // entfernt jedes style also auch das display none.
         document.getElementById('question-body').style = 'display: none'; // fügt der id display none hinzu.
         document.getElementById('next-btn').innerText = 'Quiz erneut starten';
         document.getElementById("next-btn").disabled = false;
-
         document.getElementById('right-amound').innerHTML = rightQuestions;
+        document.getElementById('header-img').src = './img/trophy.png' // ändert das Bild am ende zu diesem Bild
+        document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken im Endscreen
+        document.getElementById('progress-bar').style.width = `${percent}%`; //lässt den progress balken wachsen im Endscreen
+        document.getElementById('amount-none').style = 'display: none;';
     }
-    else {
+    else { // show Question
+
+        
+        document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken
+        document.getElementById('progress-bar').style.width = `${percent}%`; // lässt den progress balken wachsen
 
         let question = questions[currentQuestion]; // JSON Array an der Stelle von Currentquestion( erst Null und dann 1 ab nextQuestion() usw)
 
         document.getElementById('actual-amount').innerHTML = currentQuestion + 1;
         document.getElementById('questiontext').innerHTML = question['question'];
         document.getElementById('answer_1').innerHTML = question['answer_1'];
+        document.getElementById('answer_2').innerHTML = question['answer_2'];
         document.getElementById('answer_3').innerHTML = question['answer_3'];
         document.getElementById('answer_4').innerHTML = question['answer_4'];
     }

@@ -21,12 +21,16 @@
 
   <div class="container">
     <div class="card quiz-card">
-      <img src="./img/question-mark.jpg" class="card-img-top">
+      <img src="./img/question-mark.jpg" id="header-img" class="card-img-top">
+
+      <div class="progress">
+        <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" >25%</div>
+      </div>
 
       <div class="card-body" id="endScreen" style="display: none;">
-        <div class="text-center">Quiz beendet</div>
+        <div class="text-center final-text">Quiz beendet</div>
 
-        <div><img class="width-100" src="./img/trophy.png" alt=""></div>
+        
         <div class="text-center">
           Du hast  <b id="right-amound">XXX</b> Fragen von <b id="question-amountEnd">XXX</b> richtig beantwortet.
         </div>
@@ -65,7 +69,7 @@
       </div>
 
       <div class="question-footer">
-        <span> <b id="actual-amount"></b> von <b id="question-amount"></b> Fragen</span>
+        <span id="amount-none"> <b id="actual-amount"></b> von <b id="question-amount"></b> Fragen</span>
 
         <button onclick=" nextQuestion()" id="next-btn" class="btn btn-primary" disabled>Nächste Frage</button>
       </div>
