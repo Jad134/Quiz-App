@@ -74,21 +74,23 @@ function showQuestion() {
     let percent = currentQuestion / questions.length; // Rechnet die aktuelle frage durch die anzahl der fragen.
     percent = Math.round(percent * 100); // rechnet dann das ergebnis von percent mal 100 um richtige zahlen mit der kommastelle zu bekommen. Math.round runded auf
 
+    
+    
     if (currentQuestion >= questions.length) {
         //show end screen
         document.getElementById('endScreen').style = ``; // entfernt jedes style also auch das display none.
         document.getElementById('question-body').style = 'display: none'; // fügt der id display none hinzu.
-        document.getElementById('next-btn').innerText = 'Quiz erneut starten';
-        document.getElementById("next-btn").disabled = false;
+        document.getElementById('question-footer').style = 'display: none'; // Lässt den button verschwinden
         document.getElementById('right-amound').innerHTML = rightQuestions;
-        document.getElementById('header-img').src = './img/trophy.png' // ändert das Bild am ende zu diesem Bild
+        document.getElementById('header-img').src = './img/trophy.png'; // ändert das Bild am ende zu diesem Bild
         document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken im Endscreen
         document.getElementById('progress-bar').style.width = `${percent}%`; //lässt den progress balken wachsen im Endscreen
         document.getElementById('amount-none').style = 'display: none;';
+       
     }
     else { // show Question
 
-        
+
         document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken
         document.getElementById('progress-bar').style.width = `${percent}%`; // lässt den progress balken wachsen
 
@@ -136,5 +138,17 @@ function resetAnswerButtons() {
     document.getElementById('answer_3').parentNode.classList.remove('bg-success')
     document.getElementById('answer_4').parentNode.classList.remove('bg-danger')
     document.getElementById('answer_4').parentNode.classList.remove('bg-success')
+}
+
+function restart() {
+    document.getElementById('header-img').src = './img/question-mark.jpg';
+    rightQuestions = 0;
+    currentQuestion = 0;
+    document.getElementById('question-body').style = ''; // entfernt d-none.
+    document.getElementById('question-footer').style = ''; // lässt den button wieder anzeigen
+    document.getElementById('amount-none').style = ''; //entfernt d-none und lässt x von x fragen anzeigen
+    document.getElementById('endScreen').style = `display: none;`; // lässt das ergebnis wieder verschwinden
+    init();
+    
 }
 

@@ -34,6 +34,9 @@
         <div class="text-center">
           Du hast  <b id="right-amound">XXX</b> Fragen von <b id="question-amountEnd">XXX</b> richtig beantwortet.
         </div>
+        <div class="end-btn">
+        <button onclick=" restart()" id="restart-btn" class="btn btn-primary" >Quiz erneut spielen</button>
+      </div>
       </div>
 
       <div class="card-body" id="question-body">
@@ -68,7 +71,7 @@
         </div>
       </div>
 
-      <div class="question-footer">
+      <div id="question-footer" class="question-footer">
         <span id="amount-none"> <b id="actual-amount"></b> von <b id="question-amount"></b> Fragen</span>
 
         <button onclick=" nextQuestion()" id="next-btn" class="btn btn-primary" disabled>Nächste Frage</button>
