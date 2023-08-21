@@ -59,8 +59,9 @@ let questions = [{
 ]
 
 let rightQuestions = 0; // Um die richtigen Antworten anzuzeigen
-
 let currentQuestion = 0;  // als start für die Arrays an der Stelle null
+let AUDIO_succes = new Audio('audio/success.mp3');
+let AUDIO_fail = new Audio('audio/wrong.mp3');
 
 
 function init() {
@@ -70,39 +71,18 @@ function init() {
 }
 
 function showQuestion() {
-
     let percent = currentQuestion / questions.length; // Rechnet die aktuelle frage durch die anzahl der fragen.
     percent = Math.round(percent * 100); // rechnet dann das ergebnis von percent mal 100 um richtige zahlen mit der kommastelle zu bekommen. Math.round runded auf
 
-    
-    
-    if (currentQuestion >= questions.length) {
-        //show end screen
-        document.getElementById('endScreen').style = ``; // entfernt jedes style also auch das display none.
-        document.getElementById('question-body').style = 'display: none'; // fügt der id display none hinzu.
-        document.getElementById('question-footer').style = 'display: none'; // Lässt den button verschwinden
-        document.getElementById('right-amound').innerHTML = rightQuestions;
-        document.getElementById('header-img').src = './img/trophy.png'; // ändert das Bild am ende zu diesem Bild
-        document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken im Endscreen
-        document.getElementById('progress-bar').style.width = `${percent}%`; //lässt den progress balken wachsen im Endscreen
-        document.getElementById('amount-none').style = 'display: none;';
-       
+    if (gameIsOver()) {
+        showEndScreen(percent);
     }
-    else { // show Question
-
-
-        document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken
-        document.getElementById('progress-bar').style.width = `${percent}%`; // lässt den progress balken wachsen
-
-        let question = questions[currentQuestion]; // JSON Array an der Stelle von Currentquestion( erst Null und dann 1 ab nextQuestion() usw)
-
-        document.getElementById('actual-amount').innerHTML = currentQuestion + 1;
-        document.getElementById('questiontext').innerHTML = question['question'];
-        document.getElementById('answer_1').innerHTML = question['answer_1'];
-        document.getElementById('answer_2').innerHTML = question['answer_2'];
-        document.getElementById('answer_3').innerHTML = question['answer_3'];
-        document.getElementById('answer_4').innerHTML = question['answer_4'];
+    else {
+        updateToNextQuestion(percent)
     }
+}
+function gameIsOver(){
+    return currentQuestion >= questions.length;
 }
 
 function answer(selection) {
@@ -110,16 +90,26 @@ function answer(selection) {
     let selectedQuestionNumber = selection.slice(-1); // Nutze den letzten Buchstaben aus der funktion answer() aus HTML. Also answer_1 wird die 1 definiert.
     let idOfRightAnswer = `answer_${question['right_answer']}`;
 
-    if (selectedQuestionNumber == question['right_answer']) { // Also wenn right_answer den Wert 3 hat, so wie der letzte Buchstabe aus der answer() hast du die richtige antowrt gedrückt
-        console.log('richtige Antwort');
+    if (rightAnswerSelected(selectedQuestionNumber, question)) { // Also wenn right_answer den Wert 3 hat, so wie der letzte Buchstabe aus der answer() hast du die richtige antowrt gedrückt
         document.getElementById(selection).parentNode.classList.add('bg-success'); //.parentNode spricht man das eltern Element an
         rightQuestions++; // Erhöhe right questions um 1 um das Ergebnis am Ende anzuzeigen
+        AUDIO_succes.play();
     }
     else {
         document.getElementById(selection).parentNode.classList.add('bg-danger');
         document.getElementById(idOfRightAnswer).parentNode.classList.add('bg-success');
+        AUDIO_fail.play();
+
+    }
+    if (rightQuestions > questions.length) { // beim mehrfach klicken auf die richtige antwort wird das ergebnis nicht die länge dan anzahl von fragen überschreiten
+        rightQuestions = questions.length
     }
     document.getElementById("next-btn").disabled = false; // Lasse den Button anklickbar machen
+
+}
+
+function rightAnswerSelected(selectedQuestionNumber, question){
+    return selectedQuestionNumber == question['right_answer']
 }
 
 function nextQuestion() {
@@ -130,14 +120,11 @@ function nextQuestion() {
 }
 
 function resetAnswerButtons() {
-    document.getElementById('answer_1').parentNode.classList.remove('bg-danger')
-    document.getElementById('answer_1').parentNode.classList.remove('bg-success')
-    document.getElementById('answer_2').parentNode.classList.remove('bg-danger')
-    document.getElementById('answer_2').parentNode.classList.remove('bg-success')
-    document.getElementById('answer_3').parentNode.classList.remove('bg-danger')
-    document.getElementById('answer_3').parentNode.classList.remove('bg-success')
-    document.getElementById('answer_4').parentNode.classList.remove('bg-danger')
-    document.getElementById('answer_4').parentNode.classList.remove('bg-success')
+    for (let j = 1; j < 5 ; j++){
+        
+    document.getElementById(`answer_${j}`).parentNode.classList.remove('bg-danger')
+    document.getElementById(`answer_${j}`).parentNode.classList.remove('bg-success')
+    }
 }
 
 function restart() {
@@ -149,6 +136,32 @@ function restart() {
     document.getElementById('amount-none').style = ''; //entfernt d-none und lässt x von x fragen anzeigen
     document.getElementById('endScreen').style = `display: none;`; // lässt das ergebnis wieder verschwinden
     init();
-    
+
 }
+
+function showEndScreen(percent) {
+    document.getElementById('endScreen').style = ``; // entfernt jedes style also auch das display none.
+    document.getElementById('question-body').style = 'display: none'; // fügt der id display none hinzu.
+    document.getElementById('question-footer').style = 'display: none'; // Lässt den button verschwinden
+    document.getElementById('right-amound').innerHTML = rightQuestions;
+    document.getElementById('header-img').src = './img/trophy.png'; // ändert das Bild am ende zu diesem Bild
+    document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken im Endscreen
+    document.getElementById('progress-bar').style.width = `${percent}%`; //lässt den progress balken wachsen im Endscreen
+    document.getElementById('amount-none').style = 'display: none;';
+}
+
+function updateToNextQuestion(percent) {
+    let question = questions[currentQuestion]; // JSON Array an der Stelle von Currentquestion( erst Null und dann 1 ab nextQuestion() usw)
+
+    document.getElementById('progress-bar').innerHTML = `${percent} %`; // ändert die zahl im progress balken
+    document.getElementById('progress-bar').style.width = `${percent}%`; // lässt den progress balken wachsen
+    document.getElementById('actual-amount').innerHTML = currentQuestion + 1;
+    document.getElementById('questiontext').innerHTML = question['question'];
+    document.getElementById('answer_1').innerHTML = question['answer_1'];
+    document.getElementById('answer_2').innerHTML = question['answer_2'];
+    document.getElementById('answer_3').innerHTML = question['answer_3'];
+    document.getElementById('answer_4').innerHTML = question['answer_4'];
+}
+
+
 
